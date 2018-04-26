@@ -19,16 +19,11 @@
   }
 
   function slacknize(s) {
-  	var ret = s.replace(/.*] /g, "");
-  	ret = ret.replace(/ \//g, "");
-  	ret = ret.replace(/[^a-zA-Z \n]/g, "");
-  	ret = ret.replace(/[ \t]*$/g, "");
-  	ret = ret.replace(/ *\n/g, "\n");
-  	ret = ret.replace(/ /g, ".");
-  	ret = ret.toLowerCase();
-  	ret = ret.replace(/^/mg, "@");
-  	ret = ret.replace(/@$/mg, "");
-  	return ret;
+    return s.split('\n').map(function(substr){
+      var matched = substr.toLowerCase().match(/[a-z]{3,20}[\s\.][a-z]{3,20}/);
+      if (!matched) return null;
+      return "@" + matched[0].replace(/\s/, '.');
+    }).join('\n');
   }
 
   $(function() {
