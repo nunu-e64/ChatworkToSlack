@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <title>Chatwork To Slack</title>
+  </head>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<body>
+<main>
+<script>
+  function sanitize(s) {
+    var bar = s.match(/\[To\:[0-9]+\]/g);
+    if (bar == null) return "";
+    var txt = "";
+    for (var i = 0; i < bar.length; i++) {
+      txt += bar[i];
+    }
+    return txt;
+  }
+
+  function slacknize(s) {
+  	var ret = s.replace(/.*] /g, "");
+  	ret = ret.replace(/ \//g, "");
+  	ret = ret.replace(/[^a-zA-Z \n]/g, "");
+  	ret = ret.replace(/[ \t]*$/g, "");
+  	ret = ret.replace(/ *\n/g, "\n");
+  	ret = ret.replace(/ /g, ".");
+  	ret = ret.toLowerCase();
+  	ret = ret.replace(/^/mg, "@");
+  	ret = ret.replace(/@$/mg, "");
+  	return ret;
+  }
+
+  $(function() {
+    $("#original").bind("input paste", function(e) {
+      try {
+        $("#result").val(
+                slacknize(clipboardData.getData("text"))
+        );
+      } catch (e) {
+        $("#result").val( slacknize( $(this).val() ) );
+      }
+    });
+  });
+</script>
+
+
+  <h1>Chatwork To Slack</h1>
+
+ChatworkのToをまとめて、Slack式のメンションに変換します。<br>
+Chatworkのメンバーを、Slackにまとめて招待したいときに使ってください。<br>
+<br>
+ChatworkのToを貼り付けてください<br>
+<form>
+	<textarea name="original" id="original" rows="12" cols="80" placeholder="ここにコピペ
+例)
+[To:1234567] Ritsuko Akizuki / 秋月 律子 さん
+[To:1234567] Haruka Amami / 天海 春香 さん
+[To:1234567] Hibiki Ganaha / 我那 覇響 さん
+[To:1234567] Makoto Kikuti / 菊地 真 さん
+[To:1234567] Chihaya Kisaragi / 如月 千早 さん
+[To:1234567] Takane Shijo / 四条 貴音 さん
+[To:1234567] Yayoi Takatsuki / 高槻 やよい さん
+[To:1234567] Hagiwara Yukiho / 萩原 雪歩 さん
+[To:1234567] Ami Futami / 双海 亜美 さん
+[To:1234567] Mami Futami / 双海 真美 さん
+[To:1234567] Miki Hosii / 星井 美希 さん
+[To:1234567] Azusa Miura / 三浦 あずさ さん
+[To:1234567] Iori Minase / 水瀬 伊織 さん"></textarea><br>
+↓<br>
+	<textarea name="result" id="result" rows="12" cols="80" placeholder="ここに結果が出ます
+例）
+@ritsuko.akizuki
+@haruka.amami
+@hibiki.ganaha
+@makoto.kikuti
+@chihaya.kisaragi
+@takane.shijo
+@yayoi.takatsuki
+@hagiwara.yukiho
+@ami.futami
+@mami.futami
+@miki.hosii
+@azusa.miura
+@iori.minase"></textarea><br>
+↓<br>
+結果をSlackのチャンネルに貼り付けると、まとめて招待ができます。
+</form>
+
+<script>
+console.log('GitHub Pages Sample');
+</script>
+</body>
+</html>
+
