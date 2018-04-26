@@ -8,19 +8,9 @@
 <body>
 <main>
 <script>
-  function sanitize(s) {
-    var bar = s.match(/\[To\:[0-9]+\]/g);
-    if (bar == null) return "";
-    var txt = "";
-    for (var i = 0; i < bar.length; i++) {
-      txt += bar[i];
-    }
-    return txt;
-  }
-
   function slacknize(s) {
     return s.split('\n').map(function(substr){
-      var matched = substr.toLowerCase().match(/[a-z]{3,20}[\s\.][a-z]{3,20}/);
+      var matched = substr.toLowerCase().match(/[a-z]{2,20}[\s\.][a-z]{2,20}/);
       if (!matched) return null;
       return "@" + matched[0].replace(/\s/, '.');
     }).join('\n');
